@@ -1,8 +1,11 @@
 package com.guc.mybatismapper.onetoone;
 
 import com.guc.mybatismapper.onetoone.mapper.ClassesMapper;
+import com.guc.mybatismapper.onetoone.mapper.StudentMapper;
 import com.guc.mybatismapper.onetoone.model.Classes;
+import com.guc.mybatismapper.onetoone.model.Course;
 import com.guc.mybatismapper.onetoone.model.Student;
+import com.guc.mybatismapper.onetoone.model.StudentCourseLink;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -35,9 +38,10 @@ public class Test {
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         selectClassById(1);
         selectClassAndStudentsById(1);
+        selectStudentCourse();
+        selectCourseStudent();
 
     }
-
     private static void selectClassById(int id) {
         // 通过工厂得到 SqlSession
         SqlSession session = sqlSessionFactory.openSession();
@@ -80,4 +84,79 @@ public class Test {
         // 释放资源
         session.close();
     }
+
+    //查询所有学生及他们的选择课程的信息
+    private static void selectStudentCourse() {
+        // 通过工厂得到 SqlSession
+        SqlSession session = sqlSessionFactory.openSession();
+
+        StudentMapper mapper = session.getMapper(StudentMapper.class);
+        try {
+            List<Student> students = mapper.selectStudentCourse();
+            session.commit();
+            for(Student stu:students){
+                System.out.println("学生："+stu.getId()+","+stu.getName()+","+stu.getSex()+","+stu.getAge()+":");
+                List<Course> courses = stu.getCourses();
+                for(Course cou:courses){
+                    System.out.println("课程："+cou.getId()+","+cou.getName()+","+cou.getCredit());
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.rollback();
+        }
+
+        // 释放资源
+        session.close();
+    }
+
+    // 根据学生 id 和课程 id 删除该学生该门课的选课情况
+    private static void deleteStudentCourseById(){
+        SqlSession session = sqlSessionFactory.openSession();
+
+        StudentMapper mapper = session.getMapper(StudentMapper.class);
+        try {
+            Student student = new Student();
+            student.setId(1);
+            Course course = new Course();
+            course.setId(2);
+            StudentCourseLink scLink = new StudentCourseLink();
+            scLink.setStudent(student);
+            scLink.setCourse(course);
+            mapper.deleteStudentCourseById(scLink);
+            session.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.rollback();
+        }
+
+        session.close();
+    }
+
+    private static void selectCourseStudent() {
+        // 通过工厂得到 SqlSession
+        SqlSession session = sqlSessionFactory.openSession();
+
+        StudentMapper mapper = session.getMapper(StudentMapper.class);
+        try {
+            List<Course> courses = mapper.selectCourseStudent();
+            session.commit();
+            for(Course cou:courses){
+                System.out.println("课程："+cou.getId()+","+cou.getName()+","+cou.getCredit()+":");
+                List<Student> students = cou.getStudents();
+                for(Student stu:students){
+                    System.out.println("学生："+stu.getId()+","+stu.getName()+","+stu.getSex()+","+stu.getAge());
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.rollback();
+        }
+
+        // 释放资源
+        session.close();
+    }
+
 }
