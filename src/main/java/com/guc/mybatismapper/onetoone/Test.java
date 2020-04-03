@@ -2,6 +2,7 @@ package com.guc.mybatismapper.onetoone;
 
 import com.guc.mybatismapper.onetoone.mapper.ClassesMapper;
 import com.guc.mybatismapper.onetoone.model.Classes;
+import com.guc.mybatismapper.onetoone.model.Student;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -9,6 +10,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 /**
  * @Author guc
@@ -32,6 +34,7 @@ public class Test {
         // 创建会话工厂，传入 MyBatis 的配置文件信息
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         selectClassById(1);
+        selectClassAndStudentsById(1);
 
     }
 
@@ -47,6 +50,28 @@ public class Test {
                     + classes.getTeacher().getId() + ","
                     + classes.getTeacher().getName() + ","
                     + classes.getTeacher().getAge()+"]");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            session.rollback();
+        }
+        // 释放资源
+        session.close();
+    }
+
+    private static void selectClassAndStudentsById(int i) {
+        // 通过工厂得到 SqlSession
+        SqlSession session = sqlSessionFactory.openSession();
+        ClassesMapper mapper = session.getMapper(ClassesMapper.class);
+        try {
+            Classes classes = mapper.selectClassAndStudentsById(1);
+            session.commit();
+            System.out.println("班级信息："+classes.getId()+","+classes.getName());
+            List<Student> students = classes.getStudents();
+            System.out.println("班级的所有学生信息：");
+            for(Student stu:students){
+                System.out.println(stu.getId()+","+stu.getName()+","+stu.getSex()+","+stu.getAge());
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

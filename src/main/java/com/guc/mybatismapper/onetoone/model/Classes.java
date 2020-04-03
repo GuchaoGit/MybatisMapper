@@ -1,5 +1,7 @@
 package com.guc.mybatismapper.onetoone.model;
 
+import java.util.List;
+
 /**
  * @Author guc
  * @Date 2020/4/3 10:46
@@ -10,6 +12,8 @@ public class Classes {
     private String name;
     private HeadTeacher teacher;
 
+    private List<Student> students;
+
     public Classes() {
 
     }
@@ -18,6 +22,12 @@ public class Classes {
         this.id = id;
         this.name = name;
         this.teacher = teacher;
+    }
+
+    public Classes(Integer id, String name, List<Student> students) {
+        this.id = id;
+        this.name = name;
+        this.students = students;
     }
 
     public Integer getId() {
@@ -42,5 +52,13 @@ public class Classes {
 
     public void setTeacher(HeadTeacher teacher) {
         this.teacher = teacher;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
     }
 }
