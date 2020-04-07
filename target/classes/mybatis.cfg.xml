@@ -16,6 +16,7 @@
         <!-- 指定一个包名起别名，将包内的 Java 类的类名作为类的类别名 -->
         <!--  方法一：指定一个包名起别名，将包内的 Java 类的类名作为类的类别名-->
         <package name="com.guc.mybatismapper.onetoone.model"/>
+        <package name="com.guc.mybatismapper.sql.model"/>
         <!--方法二、给指定类起别名-->
         <!--<typeAlias alias="User" type="com.guc.mybatis.entity.User"/>-->
     </typeAliases>
@@ -41,5 +42,6 @@
         <!--通过 resource 加载单个映射文件-->
         <!-- 3、通过 mapper 接口包加载整个包的映射文件 -->
         <package name="com.guc.mybatismapper.onetoone.mapper"/>
+        <package name="com.guc.mybatismapper.sql.mapper"/>
     </mappers>
 </configuration>

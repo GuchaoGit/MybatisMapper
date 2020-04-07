@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guc.mybatismapper.sql.mapper.UserMapper">
+
+    <!--if 在 where 子句中做简单的条件判断-->
+    <select id="dynamicIfTest" resultType="User">
+        select * from user where sex = 'male'
+        <if test="address != null">
+            and address = #{address}
+        </if>
+        <if test="username !=null">
+            and username like #{username}
+        </if>
+    </select>
+
+    <!--当 when 中有条件满足时，则跳出 choose-->
+    <select id="dynamicChooseTest" resultType="User">
+        select * from user where sex = 'male'
+        <choose>
+            <when test="username != null">
+                and username like #{username}
+            </when>
+            <when test="phone != null">
+                and phone like #{phone}
+            </when>
+            <otherwise>
+                and address = 'beijing'
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--trim 元素可以给自己包含的内容加上前缀（prefix）或加上后缀（suffix），也可以把包含内容的首部（prefixOverrides）或尾部（suffixOverrides）某些内容移除-->
+    <select id="dynamicTrimTest" resultType="User">
+        select * from user
+        <trim prefix="where" prefixOverrides="and |or ">
+            <if test="address != null">
+                address = #{address}
+            </if>
+            <if test="username != null">
+                and username like #{username}
+            </if>
+        </trim>
+    </select>
+
+    <!--foreach 元素常用到需要对一个集合进行遍历时，在 in 语句查询时特别有用-->
+    <select id="dynamicForeachTest" resultType="User">
+        select * from user where id in
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <!--bind 元素可以从 OGNL 表达式中创建一个变量并将其绑定到上下文。-->
+    <select id="dynamicBindTest" resultType="User">
+        <bind name="pattern" value="'%' + _parameter.getUsername() + '%'" />
+        select * from user where username like #{pattern}
+    </select>
+
+</mapper>
