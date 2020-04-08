@@ -89,3 +89,16 @@
   * 下划线转换成驼峰式命名  
   在全局配置文件中  
   * 利用ResultMap
+## 注解
+常用注解
+ * @Insert、@Update、@Delete、@Select  映射增删改查SQL语句
+ * @InsertProvider、@UpdateProvider、@DeleteProvider、@SelectProvider  映射增删改查动态SQL
+ * @Result  在列和属性或字段之间的单独结果映射
+ * @Results 结果映射的列表，包含了一个特别结果列如何被映射到属性或字段的详情
+ * @One  复杂类型的单独属性值映射，相当于 < association>
+ * @Many 映射到复杂类型的集合属性，相当于 < collection>
+ * @Options  提供配置选项的附加值
+ * @Param  当映射方法需要多个参数，这个注解可以被应用于映射器的方法 参数来给每个参数一个名字。否则，多 （不包括任何 RowBounds 参数），如 #{param1} , #{param2} 等。 使用 @Param("id"), 参数应该被命名为 #{id}
+ * @ResultMap 给@Select 或者@SelectProvider 提供在 XML 映射中的的 id
+ * @ResultType  当使用结果处理器时启用此注解  
+ [更多-MyBatis中文文档](https://mybatis.org/mybatis-3/zh/java-api.html)

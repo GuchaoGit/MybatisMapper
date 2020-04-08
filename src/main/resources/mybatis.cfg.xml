@@ -43,5 +43,6 @@
         <!-- 3、通过 mapper 接口包加载整个包的映射文件 -->
         <package name="com.guc.mybatismapper.onetoone.mapper"/>
         <package name="com.guc.mybatismapper.sql.mapper"/>
+        <package name="com.guc.mybatismapper.annotation.mapper"/>
     </mappers>
 </configuration>
