@@ -30,11 +30,11 @@ public class AppAnnotationTest {
         }
         // 创建会话工厂，传入 MyBatis 的配置文件信息
         sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-//        insertUser();
+        insertUser();
 //        updateUser();
 //        deleteUser();
-        selectAllUser();
-        selectUserById(11);
+//        selectAllUser();
+//        selectUserById(11);
     }
 
 
